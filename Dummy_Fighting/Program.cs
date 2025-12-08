@@ -14,16 +14,17 @@ namespace Dummy_Fighting {
             Console.CursorVisible = false;
 
             Player player = new Player();
+            MapManager map = new MapManager(player);
             Npc enemy = new Npc();
 
             while(true){
-            reCheckWindowProps();
-                if (Console.KeyAvailable) {
+                reCheckWindowProps();
+                /*if (Console.KeyAvailable) {
                     CheckInput(Console.ReadKey(true).Key);
-                }
+                }*/
 
-                battling(new List<Dummy> {player}, new List<Dummy> {enemy});
-                //Console.ReadKey(true);
+                //map.printMap();
+                //battling(new List<Dummy> {player}, new List<Dummy> {enemy});
 
 
 

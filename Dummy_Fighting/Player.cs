@@ -4,6 +4,7 @@ namespace Dummy_Fighting {
             addAttack(getAttackByName("Kick")); //add kick
             addAttack(getAttackByName("Fireball")); //add fireball
             addAttack(getAttackByName("Pounce"));
+            addAttack(getAttackByName("Blood for the Blood God"));
         }
 
 
@@ -83,20 +84,30 @@ namespace Dummy_Fighting {
                 
             }else if (key == ConsoleKey.Escape) {
                 clearMenu();
-                if(insideChoice == rootChoice) {return;}
+                if(insideChoice == rootChoice) {curChoiceNum = 0; return;}
                 insideChoice = insideChoice.getParent();
                 curChoice = insideChoice;
                 curChoiceNum = 0;
 
             }
-            else if(key == ConsoleKey.UpArrow) {
-                if(curChoiceNum - 1 >= 0) {
+            else if(key == ConsoleKey.LeftArrow) {
+                if(curChoiceNum - 1 >= 0 && (curChoiceNum - 1) % 2 != 1) {
                     curChoiceNum--;
                     curChoice = insideChoice.getChild(curChoiceNum);
                 }
-            }else if(key == ConsoleKey.DownArrow) {
-                if(curChoiceNum+1 < insideChoice.getChildrenNumber()) {
+            }else if(key == ConsoleKey.RightArrow) {
+                if(curChoiceNum+1 < insideChoice.getChildrenNumber() && (curChoiceNum + 1) % 2 != 0) {
                     curChoiceNum++;
+                    curChoice = insideChoice.getChild(curChoiceNum);
+                }
+            }else if(key == ConsoleKey.UpArrow) {
+                if(curChoiceNum - 2 >= 0) {
+                    curChoiceNum-= 2;
+                    curChoice = insideChoice.getChild(curChoiceNum);
+                }
+            }else if(key == ConsoleKey.DownArrow) {
+                if(curChoiceNum+2 < insideChoice.getChildrenNumber()) {
+                    curChoiceNum+= 2;
                     curChoice = insideChoice.getChild(curChoiceNum);
                 }
             }
@@ -117,7 +128,7 @@ namespace Dummy_Fighting {
             int gapFromCenter = 4;
             int curHeight = wh- 6;
 
-            Console.SetCursorPosition(ww/2, curHeight); //temp values
+            Console.SetCursorPosition(ww/2 - "Menu".Length/2, curHeight); 
             Console.Write("Menu");
 
             curHeight++;
@@ -129,17 +140,25 @@ namespace Dummy_Fighting {
                 string token = (i == curChoiceNum)? $"> ":"  " ;
                 string choice = token + choices[i];
 
-                Console.SetCursorPosition(
-                    ww / 2 - (gapFromCenter + Program.StripAnsi(choice).Length), 
-                    curHeight
-                );
+                int by = 0;
 
-                
-
+                if(i%2 == 0) {
+                    Console.SetCursorPosition(
+                        ww / 2 - (gapFromCenter + Program.StripAnsi(choice).Length), 
+                        curHeight
+                    );
+                    
+                }else {
+                    Console.SetCursorPosition(
+                        ww / 2 + gapFromCenter, 
+                        curHeight
+                    );
+                    by = 1; 
+                }
                 
 
                 Console.Write(choice);
-                curHeight++;
+                curHeight += by;
             }
 
 

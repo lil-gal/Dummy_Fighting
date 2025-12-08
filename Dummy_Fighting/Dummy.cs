@@ -43,9 +43,9 @@ namespace Dummy_Fighting {
 
         protected static Attack[] attacks = {  //hpC,stC,maC,dmg, eff, chance, cooldown
             new Attack("Kick", 0, 20, 0, 15), 
-            new Attack("Pounce", 0, 20, 0, 5, getEffectByName("Stunned"), cooldown: 3),
+            new Attack("Pounce", 0, 20, 0, 5, getEffectByName("Stunned"), cooldown: 5),
             new Attack("Blood for the Blood God", 40, 0, 0, 40),
-            new Attack("Fireball", 0, 0, 20, 15, getEffectByName("Burned"), cooldown: 2),
+            new Attack("Fireball", 0, 0, 20, 15, getEffectByName("Burned"), cooldown: 3),
 
         };
 
@@ -234,7 +234,7 @@ namespace Dummy_Fighting {
         public void Attack(Dummy enemy, Attack attack) {
             int h = health, s = stamina, m = mana;
             attack.returnCosts(ref h, ref s, ref m);
-            if(0 <= h && 0 <= s && 0 <= m){ //if you can afford the cost
+            if(0 <= s && 0 <= m){ //if you can afford the cost  //  0 <= h &&  -  so that health costing spells are dangerous 
                 if (attack.canAttack()) {
                     enemy.getAttacked(attack);
                 }
