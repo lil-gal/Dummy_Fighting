@@ -1,0 +1,5 @@
+[*.cs]
+csharp_new_line_before_open_brace = none
+
+# CS8604: Possible null reference argument.
+dotnet_diagnostic.CS8604.severity = none
