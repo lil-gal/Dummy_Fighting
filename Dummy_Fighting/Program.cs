@@ -8,7 +8,6 @@ namespace Dummy_Fighting {
         public static int wh = Console.WindowHeight;
         public static readonly Regex AnsiRegex = new Regex(@"\x1B\[[0-9;]*m", RegexOptions.Compiled);
 
-
         static void Main() {
             Console.Clear();
             Console.CursorVisible = false;
@@ -17,13 +16,14 @@ namespace Dummy_Fighting {
             MapManager map = new MapManager(player);
             Npc enemy = new Npc();
 
+            
             while(true){
                 reCheckWindowProps();
                 /*if (Console.KeyAvailable) {
                     CheckInput(Console.ReadKey(true).Key);
                 }*/
 
-                //map.printMap();
+                map.printMap();
                 //battling(new List<Dummy> {player}, new List<Dummy> {enemy});
 
 

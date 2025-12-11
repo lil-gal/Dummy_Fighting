@@ -1,7 +1,7 @@
 Map{
     Size:
     Implemented how:
-    Visuals:
+    Visuals:    
     Position:
     Moving:
 }
