@@ -103,7 +103,6 @@ namespace Dummy_Fighting {
         }
 
         public string getAttackName() {
-            
             return attackName;
         }
 

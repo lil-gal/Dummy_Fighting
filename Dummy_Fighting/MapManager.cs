@@ -6,8 +6,8 @@ namespace Dummy_Fighting {
 
         int[] map = {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+            0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -19,8 +19,16 @@ namespace Dummy_Fighting {
 
         int mapLength = 10;
         int visibleMapLength = 5;
+        int pixelSize= 3;
 
+        public MapManager() {
+            player = new Player();
+        }
         public MapManager(Player player) {
+            this.player = player;
+        }
+
+        public void setPlayer(Player player) {
             this.player = player;
         }
 
@@ -29,43 +37,86 @@ namespace Dummy_Fighting {
             Console.SetCursorPosition(0,0);
 
             for(int i = 0; i < map.Length/mapLength; i++) { //rows
-                for(int j = 0; j < mapLength; j++) {
-                    writeNumCode(map[i * mapLength + j]);
+                for(int j = 0; j < mapLength; j++) { //cols
+                    writeNumCode(map[i * mapLength + j], (i*mapLength +j));
                 }
-                Console.WriteLine();
+                Console.Write($"\x1B[{pixelSize}B\x1B[1G");
                 
             }
+            Console.Write(debugText);
 
-            Console.Write("\x1B[39;49m"); // reset colors
+            ANSI.changeColor(); // reset colors
             
         }
+        string debugText;
 
-        private void writeNumCode(int num) {
+        private void writeNumCode(int num, int posInMap) {
             /*
             0 - free
             1 - wall
             
             */
+            char ch = ' ';
+
+            player.getPosition(out int pX, out int pY);
+            debugText = $"Debug: playerX: {pX}, playerY: {pY}";
+
+
+            
+
             switch (num) {
                 case 0:
-                    Console.Write("\x1B[30;47m "); //white bg - black fore
-                    Console.Write(' ');
+                    ANSI.changeColor(0,255);; //white bg - black fore
+                    ch = ' ';
                 break;
 
                 case 1:
-                    Console.Write("\x1B[37;40m ");
-                    Console.Write(' ');
+                    ANSI.changeColor(255,0);
+                    ch = ' ';
                 break;
 
                 default:
-                    Console.Write("\x1B[39;49m"); // reset colors
+                    ANSI.changeColor(); // reset colors
+                    ch = ' ';
                 break;
             }
+
+
+            if(pX == posInMap % mapLength && pY == posInMap / mapLength) {
+                ch = 'P';
+            }
+
+            resizePixels(ch);
             
         }
 
+        private void resizePixels(char ch) {
+            int col = Console.CursorLeft+1;
+            for (int i = 0; i < pixelSize; i++) {
+                for (int j = 0; j < pixelSize; j++) {
+                    Console.Write(ch);
+                }
+                Console.Write($"\x1B[{col}G\x1B[1B"); //1 down, pixelSize left
+            }
+
+            Console.Write($"\x1B[{pixelSize}A\x1B[{pixelSize}C"); //    //pixelSize up, pixelSize right
+
+            ANSI.changeColor(); // reset colors
+        }
+
         public void move(int dx, int dy) {
-            
+            player.move(dx,dy);
+        }
+
+        private void properties(int num) {
+
+            switch (num) {
+                
+
+
+                default:
+                break;
+            }
         }
     }
 }

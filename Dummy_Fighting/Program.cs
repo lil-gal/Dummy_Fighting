@@ -4,30 +4,37 @@ using System.Text.RegularExpressions;
 namespace Dummy_Fighting {
     internal class Program {
 
+        
+
+
+
         public static int ww = Console.WindowWidth;
         public static int wh = Console.WindowHeight;
         public static readonly Regex AnsiRegex = new Regex(@"\x1B\[[0-9;]*m", RegexOptions.Compiled);
+        static MapManager map = new MapManager();
 
         static void Main() {
+            ANSI.changeColor();
             Console.Clear();
             Console.CursorVisible = false;
 
             Player player = new Player();
-            MapManager map = new MapManager(player);
+            map.setPlayer(player);
+            
             Npc enemy = new Npc();
 
             
             while(true){
                 reCheckWindowProps();
-                /*if (Console.KeyAvailable) {
+                if (Console.KeyAvailable) {
                     CheckInput(Console.ReadKey(true).Key);
-                }*/
+                }
 
-                map.printMap();
-                //battling(new List<Dummy> {player}, new List<Dummy> {enemy});
+                //map.printMap();
+                battling(new List<Dummy> {player}, new List<Dummy> {enemy});
 
 
-
+                
             }
             
         }
@@ -61,6 +68,7 @@ namespace Dummy_Fighting {
             int gap = 3; // lines between each character
             int curHeight = 0; // current height im writing at
             int fromRight = 35;
+            ANSI.changeColor();
 
             //Console.SetCursorPosition(0,0);  // basically done by now, leaving it here as a backup?
 
@@ -100,12 +108,27 @@ namespace Dummy_Fighting {
         }
 
         public static void reCheckWindowProps() {
-            ww = Console.WindowWidth;
-            wh = Console.WindowHeight;
+            if(ww != Console.WindowWidth || wh != Console.WindowHeight){
+                ANSI.changeColor();
+                Console.Clear();
+                ww = Console.WindowWidth;
+                wh = Console.WindowHeight;
+            }
         }
 
 
+
+        static ConsoleKey[] moveKeys = [ConsoleKey.W,ConsoleKey.S,ConsoleKey.A,ConsoleKey.D,
+        ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.LeftArrow, ConsoleKey.RightArrow];
         static void CheckInput(ConsoleKey key) {
+            for (int i = 0; i < moveKeys.Length; i++) {
+                if(moveKeys[i] == key){
+                    if(i % 4 == 0){ map.move(0, -1); break;}
+                    if(i % 4 == 1){ map.move(0, 1); break;}
+                    if(i % 4 == 2){ map.move(-1, 0); break;}
+                    if(i % 4 == 3){ map.move(1, 0); break;}
+                }
+            }
 
         }
 

@@ -1,11 +1,37 @@
 namespace Dummy_Fighting {
     internal class Player : Dummy {
+
+        int x;
+        int y;
         public Player(string name = "Player") : base(name) {
             addAttack(getAttackByName("Kick")); //add kick
             addAttack(getAttackByName("Fireball")); //add fireball
             addAttack(getAttackByName("Pounce"));
             addAttack(getAttackByName("Blood for the Blood God"));
         }
+
+        public Player(string name, int health, int stamina, int mana, int _MaxHealth, int _MaxStamina, int _MaxMana, int exp, int level, int x, int y, List<Attack> attacks)
+            :base(name, health, stamina, mana, _MaxHealth, _MaxStamina, _MaxMana, exp, level) {
+
+            this.x = x;
+            this.y = y;
+
+            foreach(Attack att in attacks) {
+                addAttack(att);
+            }
+        }
+
+        public void move(int dx, int dy) {
+            x += dx;
+            y += dy;
+        }
+
+        public void getPosition(out int x, out int y) {
+            x = this.x;
+            y = this.y;
+        }
+
+
 
 
         //Fighting mode:

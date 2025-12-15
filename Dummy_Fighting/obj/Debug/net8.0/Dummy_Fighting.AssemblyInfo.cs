@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Dummy_Fighting")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c58e6aaba1d5a52925229ea7e1ffdf8fd629aafd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b7c5ecac1bc63e16a3309d3d377aa3bfa3b2d8b5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Dummy_Fighting")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Dummy_Fighting")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
