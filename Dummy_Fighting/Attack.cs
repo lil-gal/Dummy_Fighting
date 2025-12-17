@@ -60,7 +60,7 @@ namespace Dummy_Fighting {
 
             string temp = $"{attackName} (Deals: {damage}dmg; Costs: {healthCostText}{staminaCostText}{manaCostText}){chance}";
             if(cooldownCounter != 0) {
-                return $"\x1B[38;5;240m{temp} ({cooldownCounter})\x1B[37m";
+                return $"\x1B[38;5;240m{temp} ({cooldownCounter})";
             }
             return temp;
         }

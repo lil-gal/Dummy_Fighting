@@ -44,12 +44,17 @@ namespace Dummy_Fighting {
 
 
         public override void goFight(List<Dummy> allies, List<Dummy> enemies) {
-            chooseAction(enemies[0]);
+            continueChoosing = true;
+            
+            while(continueChoosing){
+                Program.printBattle(allies, enemies);
+                chooseAction(enemies[0]);
+            }
+            Program.Clear();
         }
         
         bool continueChoosing;
         public void chooseAction(Dummy target) {
-            continueChoosing = true;
 
 
 
@@ -86,16 +91,12 @@ namespace Dummy_Fighting {
             curChoice = rootChoice.getChild(0);
             curChoiceNum = 0;
 
-            while(continueChoosing){
-                if (Console.KeyAvailable) {
-                    CheckChoiceInput(Console.ReadKey(true).Key);
-                }
-
-                printMenu();
-            }
-            Console.Clear();
-
             
+            if (Console.KeyAvailable) {
+                CheckChoiceInput(Console.ReadKey(true).Key);
+            }
+
+            printMenu();
 
             
         }
@@ -184,6 +185,7 @@ namespace Dummy_Fighting {
                 
 
                 Console.Write(choice);
+                ANSI.changeColor(); //reset colors
                 curHeight += by;
             }
 

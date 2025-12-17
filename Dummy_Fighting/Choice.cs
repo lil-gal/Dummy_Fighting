@@ -12,6 +12,7 @@ namespace Dummy_Fighting {
         public Choice(List<Choice> children, string name) {
             this.children = children;
             this.name = name;
+            parent = this;
             foreach(Choice child in children) {
                 child.parent = this;
             }

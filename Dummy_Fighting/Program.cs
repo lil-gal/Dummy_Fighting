@@ -14,9 +14,12 @@ namespace Dummy_Fighting {
         static MapManager map = new MapManager();
 
         static void Main() {
+
             ANSI.changeColor();
-            Console.Clear();
+            Clear();
             Console.CursorVisible = false;
+
+
 
             Player player = new Player();
             map.setPlayer(player);
@@ -30,12 +33,20 @@ namespace Dummy_Fighting {
                     CheckInput(Console.ReadKey(true).Key);
                 }
 
-                //map.printMap();
-                battling(new List<Dummy> {player}, new List<Dummy> {enemy});
+                map.printMap();
+                //battling(new List<Dummy> {player}, new List<Dummy> {enemy});
 
 
                 
             }
+            
+        }
+
+        static void startMenu() {
+            
+        }
+
+        static void print() {
             
         }
 
@@ -64,7 +75,7 @@ namespace Dummy_Fighting {
 
         
 
-        static void printBattle(List<Dummy> leftSide, List<Dummy> rightSide) {
+        public static void printBattle(List<Dummy> leftSide, List<Dummy> rightSide) {
             int gap = 3; // lines between each character
             int curHeight = 0; // current height im writing at
             int fromRight = 35;
@@ -109,10 +120,11 @@ namespace Dummy_Fighting {
 
         public static void reCheckWindowProps() {
             if(ww != Console.WindowWidth || wh != Console.WindowHeight){
-                ANSI.changeColor();
                 Console.Clear();
+                ANSI.changeColor();
                 ww = Console.WindowWidth;
                 wh = Console.WindowHeight;
+                Clear();
             }
         }
 
@@ -139,6 +151,14 @@ namespace Dummy_Fighting {
         public static string StripAnsi(string input)
         {
             return AnsiRegex.Replace(input, "");
+        }
+
+        public static void Clear() {
+            reCheckWindowProps();
+            
+            for (int i = 0; i < wh; i++){
+                Console.WriteLine(new string(' ', ww));
+            }
         }
         
     }
