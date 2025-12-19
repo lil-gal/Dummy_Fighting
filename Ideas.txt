@@ -1,7 +1,0 @@
-Map{
-    Size:
-    Implemented how:
-    Visuals:    
-    Position:
-    Moving:
-}

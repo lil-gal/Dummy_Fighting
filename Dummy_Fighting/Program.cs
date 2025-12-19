@@ -14,7 +14,7 @@ namespace Dummy_Fighting {
         static MapManager map = new MapManager();
 
         static void Main() {
-
+            startMenu();
             ANSI.changeColor();
             Clear();
             Console.CursorVisible = false;
@@ -43,6 +43,9 @@ namespace Dummy_Fighting {
         }
 
         static void startMenu() {
+            Console.Write("PLS SECELCT FULL SCREEN. IM BEGGING U");
+
+            Console.ReadKey();
             
         }
 
@@ -155,6 +158,7 @@ namespace Dummy_Fighting {
 
         public static void Clear() {
             reCheckWindowProps();
+            Console.SetCursorPosition(0,0);
             
             for (int i = 0; i < wh; i++){
                 Console.WriteLine(new string(' ', ww));

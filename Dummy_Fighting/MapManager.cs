@@ -5,20 +5,20 @@ namespace Dummy_Fighting {
         Player player;
 
         int[] map = {
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-            0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-            0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 
+            0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
+            0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+            0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         };
 
-        int mapLength = 10;
-        int visibleMapLength = 5;
+        int mapLength = 20;
+        int visibleMapLength = 5; //less than map length!!!! less than mpa height!!! ALWAYS ODD
         int pixelSize= 3;
 
         public MapManager() {
@@ -33,22 +33,58 @@ namespace Dummy_Fighting {
         }
 
         public void printMap() {
+            int startPrintX = 5;
+            int startPrintY = 5;
 
-            Console.SetCursorPosition(0,0);
+            Console.SetCursorPosition(startPrintX, startPrintY);
 
-            for(int i = 0; i < map.Length/mapLength; i++) { //rows
-                for(int j = 0; j < mapLength; j++) { //cols
-                    writeNumCode(map[i * mapLength + j], (i*mapLength +j));
+
+            player.getPosition(out int pX, out int pY);
+
+            int visibleMapLengthHalf = visibleMapLength/2;
+
+            
+            int startCol = Math.Max(0, pX+1 - visibleMapLengthHalf-1);
+            if(pX + visibleMapLength-1 > mapLength){
+                startCol = mapLength-visibleMapLength;
+            }
+            int cols = startCol + visibleMapLength;
+
+            int startRow = Math.Max(0, pY+1 - visibleMapLengthHalf-1);
+            if(pY + visibleMapLength-1 > map.Length/mapLength){
+                startRow = map.Length/mapLength-visibleMapLength;
+            }
+            int rows = startRow + visibleMapLength;
+
+            for(int i = startRow; i < rows; i++) { //rows
+                for(int j = startCol; j < cols; j++) { //cols
+
+                    if(XYintoMAP(j,i) > map.Length-1){return;}
+
+                    writeNumCode(map[XYintoMAP(j,i)], (XYintoMAP(j,i)));
                 }
-                Console.Write($"\x1B[{pixelSize}B\x1B[1G");
+                Console.Write($"\x1B[{pixelSize}B\x1B[{startPrintX+1}G");
                 
             }
+            debugText += $" visX: ({startCol}) visHalf: {visibleMapLengthHalf}";
+
+            
             Console.Write(debugText);
 
             ANSI.changeColor(); // reset colors
             
         }
         string debugText;
+
+        private int XYintoMAP(int x, int y) {
+            return y * mapLength + x;
+        }
+        private int MAPintoX(int m) {
+            return m % mapLength;
+        }
+        private int MAPintoY(int m) {
+            return m / mapLength;
+        }
 
         private void writeNumCode(int num, int posInMap) {
             /*
@@ -82,7 +118,7 @@ namespace Dummy_Fighting {
             }
 
 
-            if(pX == posInMap % mapLength && pY == posInMap / mapLength) {
+            if(pX == MAPintoX(posInMap) && pY == MAPintoY(posInMap)) {
                 ch = 'P';
             }
 
@@ -105,16 +141,39 @@ namespace Dummy_Fighting {
         }
 
         public void move(int dx, int dy) {
+            if (!canMove(dx, dy)) {return;}
             player.move(dx,dy);
         }
 
-        private void properties(int num) {
+        private bool canMove(int dx, int dy) {
+            player.getPosition(out int pX, out int pY);
+            int dirPos = XYintoMAP(pX+dx,pY+dy);
+
+            if(dirPos < 0 || dirPos > map.Length-1 || pX+dx < 0 || pX+dx > mapLength-1){return false;} //map boundaries
+
+            properties(map[dirPos], out bool passable);
+
+            if(!passable){return false;} //not passable obj
+
+            return true;
+
+            
+        }
+
+        private void properties(int num, out bool passable) {
 
             switch (num) {
-                
+                case 0: 
+                    passable = true;
+                break;
+
+                case 1:
+                    passable = false;
+                break;
 
 
                 default:
+                    passable = false;
                 break;
             }
         }
