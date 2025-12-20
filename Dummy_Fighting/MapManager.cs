@@ -76,15 +76,9 @@ namespace Dummy_Fighting {
         }
         string debugText;
 
-        private int XYintoMAP(int x, int y) {
-            return y * mapLength + x;
-        }
-        private int MAPintoX(int m) {
-            return m % mapLength;
-        }
-        private int MAPintoY(int m) {
-            return m / mapLength;
-        }
+        private int XYintoMAP(int x, int y) => y * mapLength + x;
+        private int MAPintoX(int m) => m % mapLength;
+        private int MAPintoY(int m) => m / mapLength;
 
         private void writeNumCode(int num, int posInMap) {
             /*
@@ -161,21 +155,11 @@ namespace Dummy_Fighting {
         }
 
         private void properties(int num, out bool passable) {
-
-            switch (num) {
-                case 0: 
-                    passable = true;
-                break;
-
-                case 1:
-                    passable = false;
-                break;
-
-
-                default:
-                    passable = false;
-                break;
-            }
+            passable = num switch {
+                0 => true,
+                1 => false,
+                _ => false,
+            };
         }
     }
 }
